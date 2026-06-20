@@ -1,9 +1,9 @@
-mail_password='tlbq yeki jpop iuig'
+mail_password='cvap otsf juaz ohqe'
 import smtplib
 from email.message import EmailMessage
 def send_mail(to,subject,body):
     server=smtplib.SMTP_SSL('smtp.gmail.com',465)
-    server.login('danielganjayela@gmail.com','tlbq yeki jpop iuig')
+    server.login('danielganjayela@gmail.com','uumt qvrb uzrg rbnb')
     msg=EmailMessage()
     msg['From']='danielganjayela@gmail.com'
     msg['To']=to
@@ -16,4 +16,6 @@ def send_mail(to,subject,body):
 
 
 
-# tlbq yeki jpop iuig
+
+
+# cvap otsf juaz ohqe
