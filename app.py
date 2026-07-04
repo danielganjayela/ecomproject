@@ -26,7 +26,7 @@ import razorpay
 client = razorpay.Client(auth=("rzp_test_SzppdEzy51SPYd", "ZXV3p1lSRtZFXpt9wXac4kI8"))
 from werkzeug.utils import secure_filename #used to check secured filenames or not
 import os
-mydb=connection.MySQLConnection(user='root', password='Daniel@666', host='localhost', database='ecommerce27db')
+mydb=connection.MySQLConnection(user='flaskuser', password='password', host='localhost', database='flaskdb')
 app=Flask(__name__)
 app.wsgi_app=ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 app.permanent_session_lifetime=timedelta(days=1)
@@ -1267,6 +1267,7 @@ def buy_now():
     finally:
         if cursor:
             cursor.close()
+            
     
 @app.route('/api/add-review/<itemid>',methods=['POST'])
 def addreview(itemid):
@@ -1302,6 +1303,7 @@ def addreview(itemid):
     finally:
         if cursor:
             cursor.close()
+
 @app.route('/api/forgotpassword', methods=['POST'])
 def forgotpassword():
 
@@ -1319,7 +1321,7 @@ def forgotpassword():
 
     if count_email[0] == 1:
 
-        reset_link = f"http://127.0.0.1:5000/api/resetpassword/{endata(f_email)}"
+        reset_link =  f"http://localhost:5173/reset-password/{endata(f_email)}"
 
         subject = "Reset Password Link"
         body = f"Click the link to reset password:\n{reset_link}"
@@ -1454,7 +1456,8 @@ def category(ctype):
     try:
         mydb.ping(reconnect=True)
         cursor=mydb.cursor(buffered=True)
-        cursor.execute('''select bin_to_uuid(itemid),item_name,item_description,item_about,price,quantity,category,item_filename,created_at from items category=%s''',[ctype])
+        # cursor.execute('''select bin_to_uuid(itemid),item_name,item_description,item_about,price,quantity,category,item_filename,created_at from items category=%s''',[ctype])
+        cursor.execute('''SELECT bin_to_uuid(itemid), item_name,item_description,item_about,price,quantity,category,item_filename,created_at FROM items WHERE category = %s''', (ctype,))
         allitems_data=cursor.fetchall()
         if not allitems_data:
             return jsonify({'status':'failed','message':'No items Found'}),404
